@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -60,5 +62,18 @@ public class UserController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // Aggiungiamo il metodo per aggiungere un Pokémon all'utente
+    @PostMapping("/{userId}/pokemon/{pokemonId}")
+    public ResponseEntity<String> addUserPokemon(@PathVariable UUID userId, @PathVariable int pokemonId) {
+        usersService.addUserPokemon(userId, pokemonId);
+        return ResponseEntity.ok("Pokemon added successfully");
+    }
+
+    // Aggiungiamo il metodo per ottenere la lista dei Pokémon dell'utente
+    @GetMapping("/{userId}/pokemon")
+    public Set<Integer> getUserPokemonList(@PathVariable UUID userId) {
+        return usersService.getUserPokemonList(userId);
     }
 }

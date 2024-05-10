@@ -10,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -31,6 +33,20 @@ public class User implements UserDetails {
     private String surname;
     @Column(name = "avatar")
     private String avatarUrl;
+
+    // Aggiungi questa relazione per gestire la lista di Pokemon dell'utente
+    @ElementCollection
+    @CollectionTable(name = "user_pokemon", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "pokemon_id")
+    private Set<Integer> pokemonList = new HashSet<>();
+
+    // Costruttore, getter e setter omessi per brevità...
+
+    // Metodo per aggiungere un Pokemon alla lista dei Pokemon dell'utente
+    public void addPokemonToPokemonList(int pokemonId) {
+        this.pokemonList.add(pokemonId);
+    }
+
     public User(String username, String password, String email, String name, String surname, String avatarUrl) {
         this.username = username;
         this.password = password;

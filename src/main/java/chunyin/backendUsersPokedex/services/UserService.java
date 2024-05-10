@@ -14,9 +14,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -30,6 +34,13 @@ public class UserService {
 
     @Autowired
     private Cloudinary cloudinaryUploader;
+
+//    @Autowired
+//    private PokemonService pokemonService;
+
+    @Autowired
+    RestTemplate restTemplate;
+    private final String pokeApiBaseUrl = "https://pokeapi.co/api/v2";
 
     public User save(NewUserDTO body) throws IOException {
         userDAO.findByEmail(body.email()).ifPresent(
@@ -78,4 +89,40 @@ public class UserService {
         return userDAO.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email: " + email + " not found"));
     }
+
+    // Aggiungi metodi per gestire i Pokémon
+
+//    public void addUserPokemon(UUID userId, int pokemonId) {
+//        User user = this.findById(userId);
+//        Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
+//        user.getPokemonList().add(pokemon);
+//        userDAO.save(user);
+//    }
+//
+//    public List<Pokemon> getUserPokemonList(UUID userId) {
+//        User user = this.findById(userId);
+//        return new ArrayList<>(user.getPokemonList());
+//    }
+
+    // Metodo per aggiungere un Pokemon all'utente
+    public void addUserPokemon(UUID userId, int pokemonId) {
+        User user = findById(userId);
+
+        // Effettua una richiesta all'API PokeAPI per ottenere i dettagli del Pokemon
+        String pokemonUrl = pokeApiBaseUrl + "/pokemon/" + pokemonId;
+        restTemplate.getForObject(pokemonUrl, Object.class);
+
+        // Aggiungi il Pokemon alla lista dei Pokemon dell'utente
+        user.getPokemonList().add(pokemonId);
+
+        // Aggiorna l'utente nel database
+        userDAO.save(user);
+    }
+
+    /// Metodo per ottenere la lista dei Pokemon dell'utente
+    public Set<Integer> getUserPokemonList(UUID userId) {
+        User user = findById(userId);
+        return user.getPokemonList();
+    }
+
 }
