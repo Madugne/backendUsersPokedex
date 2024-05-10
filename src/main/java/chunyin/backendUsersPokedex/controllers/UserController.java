@@ -1,7 +1,9 @@
 package chunyin.backendUsersPokedex.controllers;
 
 import chunyin.backendUsersPokedex.entities.User;
+import chunyin.backendUsersPokedex.services.PokemonService;
 import chunyin.backendUsersPokedex.services.UserService;
+import kong.unirest.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService usersService;
+
+    @Autowired
+    PokemonService pokemonService;
 
     // GET http://localhost:3001/users
     @GetMapping
@@ -75,5 +80,16 @@ public class UserController {
     @GetMapping("/{userId}/pokemon")
     public Set<Integer> getUserPokemonList(@PathVariable UUID userId) {
         return usersService.getUserPokemonList(userId);
+    }
+
+//    @GetMapping("/pokemon/{pokemonId}")
+//    public JSONObject getPokemonDetails(@PathVariable int pokemonId) {
+//        return pokemonService.getPokemonDetails(pokemonId);
+//    }
+
+    @GetMapping("/pokemon/{pokemonId}")
+    public ResponseEntity<String> getPokemonDetails(@PathVariable int pokemonId) {
+        String pokemonDetails = pokemonService.getPokemonDetails(pokemonId);
+        return ResponseEntity.ok(pokemonDetails);
     }
 }
