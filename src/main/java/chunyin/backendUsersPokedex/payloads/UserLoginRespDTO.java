@@ -1,4 +1,6 @@
 package chunyin.backendUsersPokedex.payloads;
 
-public record UserLoginRespDTO(String accessToken) {
+import java.util.UUID;
+
+public record UserLoginRespDTO(String accessToken, UUID id) {
 }

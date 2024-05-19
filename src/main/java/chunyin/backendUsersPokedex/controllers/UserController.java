@@ -36,9 +36,8 @@ public class UserController {
     // GET http://localhost:3001/users/{id}
 
     @GetMapping("/{userId}")
-    public User findById(@PathVariable UUID utentiId) {
-
-        return usersService.findById(utentiId);
+    public User findById(@PathVariable UUID userId) {
+        return usersService.findById(userId);
     }
 
     // PUT http://localhost:3001/users/{id} (+ req.body)
