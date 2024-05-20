@@ -47,6 +47,7 @@ public class User implements UserDetails {
         this.pokemonList.add(pokemonId);
     }
 
+
     public User(String username, String password, String email, String name, String surname, String avatarUrl) {
         this.username = username;
         this.password = password;

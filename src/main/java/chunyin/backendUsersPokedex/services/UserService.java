@@ -119,6 +119,23 @@ public class UserService {
         userDAO.save(user);
     }
 
+    // Metodo per rimuovere un Pokemon all'utente
+    public void removeUserPokemon(UUID userId, int pokemonId) {
+        User user = findById(userId);
+
+        // Effettua una richiesta all'API PokeAPI per ottenere i dettagli del Pokemon
+        String pokemonUrl = pokeApiBaseUrl + "/pokemon/" + pokemonId;
+        restTemplate.getForObject(pokemonUrl, Object.class);
+
+        // Aggiungi il Pokemon alla lista dei Pokemon dell'utente
+        user.getPokemonList().remove(pokemonId);
+
+        // Aggiorna l'utente nel database
+        userDAO.save(user);
+    }
+
+
+
     /// Metodo per ottenere la lista dei Pokemon dell'utente
     public Set<Integer> getUserPokemonList(UUID userId) {
         User user = findById(userId);

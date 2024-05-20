@@ -68,11 +68,18 @@ public class UserController {
         }
     }
 
-    // Aggiungiamo il metodo per aggiungere un Pokémon all'utente
+    //aggiunta pokemon
     @PostMapping("/{userId}/pokemon/{pokemonId}")
     public ResponseEntity<String> addUserPokemon(@PathVariable UUID userId, @PathVariable int pokemonId) {
         usersService.addUserPokemon(userId, pokemonId);
         return ResponseEntity.ok("Pokemon added successfully");
+    }
+
+    //rimozione pokemon
+    @DeleteMapping("/{userId}/pokemon/{pokemonId}")
+    public ResponseEntity<String> removeUserPokemon(@PathVariable UUID userId, @PathVariable int pokemonId) {
+        usersService.removeUserPokemon(userId, pokemonId);
+        return ResponseEntity.ok("Pokemon deleted successfully");
     }
 
     // Aggiungiamo il metodo per ottenere la lista dei Pokémon dell'utente
