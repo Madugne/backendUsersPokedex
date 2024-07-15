@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_pokemon", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "pokemon_id")
     private Set<Integer> pokemonList = new HashSet<>();
-    
+
     public void addPokemonToPokemonList(int pokemonId) {
         this.pokemonList.add(pokemonId);
     }
