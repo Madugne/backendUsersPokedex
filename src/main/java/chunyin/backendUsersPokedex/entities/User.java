@@ -34,15 +34,11 @@ public class User implements UserDetails {
     @Column(name = "avatar")
     private String avatarUrl;
 
-    // Aggiungi questa relazione per gestire la lista di Pokemon dell'utente
     @ElementCollection
     @CollectionTable(name = "user_pokemon", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "pokemon_id")
     private Set<Integer> pokemonList = new HashSet<>();
-
-    // Costruttore, getter e setter omessi per brevità...
-
-    // Metodo per aggiungere un Pokemon alla lista dei Pokemon dell'utente
+    
     public void addPokemonToPokemonList(int pokemonId) {
         this.pokemonList.add(pokemonId);
     }
